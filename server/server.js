@@ -4,22 +4,23 @@ const socketIo = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = socketIo(server, {
+    cors: true,
+});
 
-const cors = require('cors');
-
-app.use(cors(
-    {
-        origin: '*'
-    }
-));
-
-io.on('connection', socket => {
-    console.log('a user connected');
-    socket.on('recompile', (data) => {
-        console.log(data);
-        socket.broadcast.emit('recompile', data);
-    });
+io.on('connection', (socket) => {
+    socket.on('join', (roomId) => {
+        socket.join(roomId);
+    })
+    socket.on('html', (value, roomId) => {
+        socket.broadcast.to(roomId).emit('html', value);
+    })
+    socket.on('css', (value, roomId) => {
+        socket.broadcast.to(roomId).emit('css', value);
+    })
+    socket.on('js', (value, roomId) => {
+        socket.broadcast.to(roomId).emit('js', value);
+    })
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });

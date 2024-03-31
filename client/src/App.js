@@ -1,15 +1,13 @@
 import React from "react";
 import CodeEditor from "./components/codeEditor";
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { v4 as uuidv4 } from "uuid";
+import { Routes, Route } from 'react-router-dom';
+import Home from "./components/Home";
 
 export default function App() {
     return (
-        <Router>
             <Routes>
-                <Route path="/" element={<Navigate to={`/${uuidv4()}`} replace />} />
-                <Route path="/:uuid" element={<CodeEditor />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/:roomId" element={<CodeEditor />} />
             </Routes>
-        </Router>
     );
 }
